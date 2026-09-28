@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #000000;
+    color: #f1f5f9;
+    overflow-x: hidden;
+  }
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-mono-nums {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Deep Black + Electric Emerald Matrix Background */
+.bg-deep-black {
+  background-color: #000000;
+}
+
+.bg-surface-dark {
+  background-color: #0A0A0A;
+}
+
+.glass-panel {
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 255, 102, 0.18);
+}
+
+.glass-input {
+  background: rgba(13, 19, 14, 0.85);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+  color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: #00FF66;
+  box-shadow: 0 0 0 1px #00FF66, 0 0 12px rgba(0, 255, 102, 0.15);
+}
+
+/* Electric Emerald Utilities */
+.text-emerald-neon {
+  color: #00FF66;
+}
+
+.bg-emerald-neon {
+  background-color: #00FF66;
+}
+
+.border-emerald-neon {
+  border-color: #00FF66;
+}
+
+/* Smooth sleek scrollbars with emerald touch */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #142319;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 255, 102, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00FF66;
+}

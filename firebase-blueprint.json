@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with referral and identity details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "avatar": { "type": "string", "maxLength": 500 },
+        "referralCode": { "type": "string", "maxLength": 32 },
+        "profileVisits": { "type": "number" },
+        "referralCount": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "email", "referralCode"]
+    },
+    "TeamRegistration": {
+      "title": "TeamRegistration",
+      "description": "Esports tournament team entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "slotNumber": { "type": "number" },
+        "registeredAt": { "type": "string", "maxLength": 64 },
+        "deviceFingerprint": { "type": "string", "maxLength": 128 },
+        "captain": { "type": "object" },
+        "team": { "type": "object" },
+        "squad": { "type": "array" },
+        "referralCodeUsed": { "type": "string", "maxLength": 32 }
+      },
+      "required": ["id", "slotNumber", "registeredAt", "deviceFingerprint", "captain", "team", "squad"]
+    },
+    "DeviceLogin": {
+      "title": "DeviceLogin",
+      "description": "Network IP and hardware device footprint binding to prevent multi-accounting",
+      "type": "object",
+      "properties": {
+        "deviceId": { "type": "string", "maxLength": 128 },
+        "ip": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 150 },
+        "boundAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["deviceId", "email", "boundAt"]
+    },
+    "TournamentSlots": {
+      "title": "TournamentSlots",
+      "description": "Dynamic capacity configuration for tournament slots",
+      "type": "object",
+      "properties": {
+        "totalSlots": { "type": "number" },
+        "bookedSlots": { "type": "number" },
+        "remainingSlots": { "type": "number" },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["totalSlots", "bookedSlots", "remainingSlots"]
+    },
+    "InvitedTeam": {
+      "title": "InvitedTeam",
+      "description": "Invited esports squad with 3 attributes: name, logo, banner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "logoUrl": { "type": "string", "maxLength": 500 },
+        "bannerUrl": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "logoUrl"]
+    },
+    "ProfileVisit": {
+      "title": "ProfileVisit",
+      "description": "20-friend referral milestone counter",
+      "type": "object",
+      "properties": {
+        "referralCode": { "type": "string", "maxLength": 32 },
+        "count": { "type": "number" },
+        "lastVisitAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["referralCode", "count"]
+    },
+    "CoolerCouponClaim": {
+      "title": "CoolerCouponClaim",
+      "description": "$40 MEMO Phone Cooler Coupon shipping address submission",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "recipientName": { "type": "string", "maxLength": 100 },
+        "recipientPhone": { "type": "string", "maxLength": 30 },
+        "shippingAddress": { "type": "string", "maxLength": 500 },
+        "courierPreference": { "type": "string", "maxLength": 100 },
+        "referralCode": { "type": "string", "maxLength": 32 },
+        "profileVisits": { "type": "number" },
+        "status": { "type": "string", "maxLength": 30 },
+        "claimedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "recipientPhone", "shippingAddress", "referralCode", "status", "claimedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Registered tournament users and captains"
+    },
+    "/teams/{teamId}": {
+      "schema": "TeamRegistration",
+      "description": "Registered tournament squads"
+    },
+    "/device_logins/{deviceId}": {
+      "schema": "DeviceLogin",
+      "description": "Network IP & device bindings to enforce single login"
+    },
+    "/settings/{settingId}": {
+      "schema": "TournamentSlots",
+      "description": "Dynamic tournament slot configuration"
+    },
+    "/invited_teams/{teamId}": {
+      "schema": "InvitedTeam",
+      "description": "Directly invited VIP esports teams"
+    },
+    "/profile_visits/{referralCode}": {
+      "schema": "ProfileVisit",
+      "description": "Referral profile visit counters"
+    },
+    "/cooler_coupon_claims/{claimId}": {
+      "schema": "CoolerCouponClaim",
+      "description": "Unlocked $40 Cooler Coupon shipping claims"
+    }
+  }
+}

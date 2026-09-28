@@ -1,0 +1,92 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function incoming() {
+      return request.resource.data;
+    }
+    function existing() {
+      return resource.data;
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email_verified == true && (
+          request.auth.token.email == 'habibaakter5yh6@gmail.com' ||
+          request.auth.token.email == 'limonsheikh65288@gmail.com' ||
+          request.auth.token.email == 'admin@memox.gg'
+        )) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users Collection: User profiles & referral identities
+    match /users/{userId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isSignedIn() && (request.auth.uid == userId || isAdmin())
+        && incoming().name is string && incoming().name.size() <= 100
+        && incoming().email is string && incoming().email.size() <= 150;
+      allow delete: if isAdmin();
+    }
+
+    // Device Logins & Single IP Footprint Registry
+    match /device_logins/{deviceId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    // Device Locks Collection
+    match /device_locks/{fingerprint} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Dynamic Tournament Settings (Slots)
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Dynamic Invited Teams (Strictly 3 attributes: name, logoUrl, bannerUrl)
+    match /invited_teams/{teamId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Teams Collection: Tournament team registrations
+    match /teams/{teamId} {
+      allow read, write: if true;
+    }
+
+    // Profile Visits: 20-Friend Visit Milestone Tracking
+    match /profile_visits/{referralCode} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+
+      // Nested unique IP visits subcollection
+      match /unique_visitors/{visitorId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Cooler Coupon Claims: $40 MEMO Phone Cooler Coupon Shipping Submissions
+    match /cooler_coupon_claims/{claimId} {
+      allow read: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+  }
+}

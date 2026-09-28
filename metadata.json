@@ -1,0 +1,6 @@
+{
+  "name": "MEMO X Free Fire Championship",
+  "description": "Official portal for the MEMO X Free Fire Championship esports tournament featuring a ৳1,42,000 BDT prize pool, VIP invited teams, dynamic referral cooler giveaway, and team registration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
